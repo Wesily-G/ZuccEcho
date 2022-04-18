@@ -10,10 +10,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public interface FeedBackServices {
-    public AnswerSheet checkSpecificContent(long answersheetID);
-    public Feedback findFeedback(Long feedbackID);
-    public HashMap<String, ArrayList<String>> feedbackStatistics(long feedbackID);
-    public Feedback publicFeedback(FeedbackDTO feedbackDTO);
-    public void fillAnswerSheet();
-    public void fillFeedback();
+    AnswerSheet checkSpecificContent(long answersheetID);
+    Feedback findFeedback(Long feedbackID);
+    HashMap<String,ArrayList<Long>> feedbackStatistics(long feedbackID);
+    Feedback publicFeedback(FeedbackDTO feedbackDTO);
+    void fillAnswerSheet();
+    void fillFeedback();
 }

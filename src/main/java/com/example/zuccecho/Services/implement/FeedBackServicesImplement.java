@@ -8,17 +8,18 @@ import com.example.zuccecho.Repository.AnswerSheetRepository;
 import com.example.zuccecho.Repository.FeedbackRepository;
 import com.example.zuccecho.Repository.StudentRepository;
 import com.example.zuccecho.Services.FeedBackServices;
-import com.example.zuccecho.Support.ResponseData;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheConfig;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.MethodArgumentNotValidException;
-import org.springframework.web.bind.annotation.*;
+
 
 import java.util.ArrayList;
 import java.util.HashMap;
 
 @Service
+@CacheConfig(cacheNames = "FeedBackService")
 public class FeedBackServicesImplement implements FeedBackServices {
     @Autowired
     private FeedbackRepository fr;
@@ -36,18 +37,18 @@ public class FeedBackServicesImplement implements FeedBackServices {
             BeanUtils.copyProperties(feedbackDTO,t);
             fr.save(t);
             //将问卷发布到所有人，也就是创建到所有人的answersheet,首先找到所有参加课程的学生然后for发布
-            ArrayList<Long> studentIds = sr.findStudentsByLectureIdsIsContaining(t.getClassID());
-            for (Long stuId : studentIds) {
+            ArrayList<Student> students = sr.findStudentsByLectureIdsIsContaining(t.getClassID());
+            for (Student stu : students) {
                 AnswerSheet answerSheet = new AnswerSheet();
-                answerSheet.setStudentID(stuId);
+                answerSheet.setStudentID(stu.getId());
                 answerSheet.setFeedbackID(t.getId());
                 asr.save(answerSheet);
             }
         }catch(Exception e){
-            System.out.println(e);
-        }finally {
-            return t;
+            System.out.println("Exception");
         }
+        return t;
+
     }
 
     public AnswerSheet checkSpecificContent(long answersheetID){
@@ -92,10 +93,28 @@ public class FeedBackServicesImplement implements FeedBackServices {
     }
 
     //追踪 应填写人，已填写人，未填写人
-    public HashMap<String,ArrayList<String>> feedbackStatistics(long feedbackID){
+    //!!!!!!!!!不知道对不对需要测试!!!!!!!!!!!!
+    @Cacheable(key ="#p0")
+    public HashMap<String,ArrayList<Long>> feedbackStatistics(long feedbackID){
+        HashMap<String,ArrayList<Long>> result = new HashMap<String,ArrayList<Long>>();
+        //先通过feedbackid找到应填写人
+        ArrayList<AnswerSheet> allAnswersheet = asr.findAnswerSheetByFeedbackID(feedbackID);
+        ArrayList<Long> todo = new ArrayList<Long>();
+        for (AnswerSheet as:allAnswersheet) {
+            todo.add(as.getStudentID());
+        }
+        result.put("todo",todo);
+        //同样的方法获得没写的人
+        ArrayList<AnswerSheet> emptyAnswersheet = asr.findAllByAnswersIsNull(feedbackID);
+        ArrayList<Long> empty = new ArrayList<Long>();
+        for (AnswerSheet as:emptyAnswersheet) {
+            empty.add(as.getStudentID());
+        }
+        result.put("empty",empty);
+        //最后获得差值就知道已填写的
+        ArrayList<Long> done = new ArrayList<>(todo);
+        done.removeAll(empty);
 
-        //...(暂时不用实现)
-
-        return null;
+        return result;
     }
 }

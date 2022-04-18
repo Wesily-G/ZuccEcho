@@ -34,7 +34,6 @@ public class FeedBackController {
             rspData.setRspData(feedBackServices.checkSpecificContent(answersheetID));
         }catch(Exception e){
             rspData.setFailed();
-            System.out.println(e);
         }
         return rspData;
     }
@@ -46,7 +45,6 @@ public class FeedBackController {
             rspData.setRspData(feedBackServices.findFeedback(feedbackID));
         }catch(Exception e){
             rspData.setFailed();
-            System.out.println(e);
         }
         return rspData;
     }
@@ -61,10 +59,14 @@ public class FeedBackController {
         feedBackServices.fillFeedback();
     }
 
-    public HashMap<String,ArrayList<String>> feedbackStatistics(long feedbackID){
-
-        //...(暂时不用实现)
-
-        return null;
+    @GetMapping("feedbackStatistics/{id}")
+    public ResponseData feedbackStatistics(@PathVariable("id") long feedbackID){
+        ResponseData rspData = new ResponseData();
+        try{
+            rspData.setRspData(feedBackServices.feedbackStatistics(feedbackID));
+        }catch(Exception e){
+            rspData.setFailed();
+        }
+        return rspData;
     }
 }
