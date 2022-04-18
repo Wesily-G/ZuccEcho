@@ -16,7 +16,7 @@ public class Lecture {
     @Id
     @AutoId
     @Field("id")
-    private Long id;
+    private long id;
     @NotBlank(message = "Name can not be empty.")
     @Field("Name")
     private String Name;
@@ -28,7 +28,7 @@ public class Lecture {
     private Date time;
     @NotBlank(message = "Teacher can not be empty.")
     @Field("TeacherID")
-    private Long teacherID;
+    private long teacherID;
     @Field("isOpen")
     private boolean isOpen;
 

@@ -16,9 +16,11 @@ public class AnswerSheet{
     @Id
     @AutoId
     @Field("id")
-    private Long id;
+    private long id;
+    @Field("feedbackID")
+    private long feedbackID;
     @Field("studentID")
-    private Long studentID;
+    private long studentID;
     @Field("answers")
     private ArrayList<String> answers;
 

@@ -4,5 +4,4 @@ import com.example.zuccecho.Entity.Feedback;
 import org.springframework.data.mongodb.repository.MongoRepository;
 
 public interface FeedbackRepository extends MongoRepository<Feedback,Long>{
-    Feedback findByAnswersheetsID(long id);
 }

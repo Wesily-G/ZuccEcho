@@ -13,11 +13,6 @@ import java.util.Map;
 @RestController
 public class AnalysisController{
 
-    //...(暂时不需要实现)
-
-    @Autowired
-    private AnswerSheetRepository asr;
-
     public ArrayList<AnswerSheet> getAnswerSheets(long feedbackID){
         //...
 

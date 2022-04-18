@@ -16,7 +16,7 @@ public class QAModel{
     @Id
     @AutoId
     @Field("id")
-    private Long id;
+    private long id;
     @NotBlank(message = "Name can not be empty.")
     @Field("name")
     private String name;

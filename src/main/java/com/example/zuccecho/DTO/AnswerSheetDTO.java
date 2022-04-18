@@ -8,7 +8,8 @@ import java.util.ArrayList;
 
 @Data
 public class AnswerSheetDTO implements Serializable {
-    private final Long id;
-    private final Long studentID;
+    private final long id;
+    private final long studentID;
+    private final long feedbackID;
     private final ArrayList<String> answers;
 }

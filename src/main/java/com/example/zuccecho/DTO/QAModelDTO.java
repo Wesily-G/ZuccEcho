@@ -12,7 +12,7 @@ import java.util.ArrayList;
 
 @Data
 public class QAModelDTO implements  Serializable{
-    private final Long id;
+    private final long id;
     private final String name;
     private final ArrayList<String> questions;
     private final ArrayList<String> selections;

@@ -12,6 +12,7 @@ import com.example.zuccecho.Support.ResponseData;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.net.BindException;
@@ -19,6 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RestController
+@RequestMapping("studentAnswer")
 public class StudentAnswerController {
     @Autowired
     private StudentAnswerServices answerServices;

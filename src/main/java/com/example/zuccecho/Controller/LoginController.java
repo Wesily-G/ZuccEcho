@@ -23,6 +23,7 @@ public class LoginController {
     @Autowired
     private LoginServices loginServices;
 
+    @GetMapping("StudentLogin/{id}/{password}")
     public ResponseData studentLogin(@PathVariable("id") Long stuID,@PathVariable("password") String password){
         ResponseData rsp = new ResponseData();
         if(!loginServices.studentLogin(stuID,password)){

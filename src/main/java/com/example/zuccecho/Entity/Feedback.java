@@ -15,13 +15,18 @@ import java.util.Date;
 public class Feedback {
     @Id
     @AutoId
+    @Field("id")
+    private long id;
     @Field("classID")
-    private Long classID;
-    @Field("TeacherID")
-    private Long TeacherID;
+    private long classID;
+    @Field("tacherID")
+    private long teacherID;
     @Field("answersheetsID")
     private ArrayList<Long> answersheetsID;
-    @Field("EndDate")
+    @Field("endDate")
     private Date endDate;
+    @Field("PublishModel")
+    private QAModel publishModel;
+
 
 }

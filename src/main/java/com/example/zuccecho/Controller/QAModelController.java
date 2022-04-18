@@ -12,6 +12,7 @@ import java.net.BindException;
 import java.util.ArrayList;
 
 @RestController
+@RequestMapping("model")
 public class QAModelController {
     @Autowired
     private QAModelServices qaModelServices;

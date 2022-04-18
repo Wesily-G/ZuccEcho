@@ -12,7 +12,7 @@ import java.io.Serializable;
 
 @Data
 public class TeacherDTO implements Serializable {
-    private final Long id;
+    private final long id;
     private final String Name;
     private final String passWord;
 

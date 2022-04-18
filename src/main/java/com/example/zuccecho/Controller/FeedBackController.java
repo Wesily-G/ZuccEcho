@@ -5,6 +5,8 @@ import com.example.zuccecho.Entity.Feedback;
 import com.example.zuccecho.Repository.AnswerSheetRepository;
 import com.example.zuccecho.Repository.FeedbackRepository;
 import com.example.zuccecho.Services.FeedBackServices;
+import com.example.zuccecho.Services.StudentAnswerServices;
+import com.example.zuccecho.Support.ResponseData;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,9 +17,7 @@ import java.util.HashMap;
 @RequestMapping("FeedBack")
 public class FeedBackController {
     @Autowired
-    private FeedbackRepository fr;
-    @Autowired
-    private AnswerSheetRepository asr;
+    private FeedBackServices feedBackServices;
 
     //应该是前端干的事把
 //    public boolean publicQuestion(long lectureID,long modelID){
@@ -28,47 +28,37 @@ public class FeedBackController {
 //    }
 
     @GetMapping("checkSpecificContent/{id}")
-    public AnswerSheet checkSpecificContent(@PathVariable("id") long answersheetID){
-        AnswerSheet t = null;
+    public ResponseData checkSpecificContent(@PathVariable("id") long answersheetID){
+        ResponseData rspData = new ResponseData();
         try{
-            t = asr.findById(answersheetID).get();
+            rspData.setRspData(feedBackServices.checkSpecificContent(answersheetID));
         }catch(Exception e){
+            rspData.setFailed();
             System.out.println(e);
-        }finally {
-            return t;
         }
+        return rspData;
     }
+
     @GetMapping("findFeedback/{id}")
-    public Feedback findFeedback(@PathVariable("id") Long feedbackID){
-        Feedback t = null;
+    public ResponseData findFeedback(@PathVariable("id") long feedbackID){
+        ResponseData rspData = new ResponseData();
         try{
-            t = fr.findById(feedbackID).get();
+            rspData.setRspData(feedBackServices.findFeedback(feedbackID));
         }catch(Exception e){
+            rspData.setFailed();
             System.out.println(e);
-        }finally {
-            return t;
         }
+        return rspData;
     }
 
     @PostMapping("fillAnswerSheet")
     public void fillAnswerSheet(){
-        AnswerSheet as = new AnswerSheet();
-        as.setStudentID(31901032L);
-        ArrayList<String> t = new ArrayList<String>();
-        t.add("How dare you?");
-        as.setAnswers(t);
-        asr.save(as);
+        feedBackServices.fillAnswerSheet();
     }
 
     @PostMapping("fillFeedback")
     public void fillFeedback(){
-        Feedback fb = new Feedback();
-        fb.setClassID(1234123L);
-        fb.setTeacherID(1235L);
-        ArrayList<Long> t = new ArrayList<Long>();
-        t.add(1L);
-        fb.setAnswersheetsID(t);
-        fr.save(fb);
+        feedBackServices.fillFeedback();
     }
 
     public HashMap<String,ArrayList<String>> feedbackStatistics(long feedbackID){
