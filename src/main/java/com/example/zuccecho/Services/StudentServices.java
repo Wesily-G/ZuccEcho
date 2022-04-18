@@ -10,5 +10,5 @@ public interface StudentServices {
     public void deleteStudentById(Long id);
     public Student findStudentById(Long id);
     public boolean updateStudent(StudentDTO studentDTO);
-    public void fillStudent()
+    public void fillStudent();
 }
