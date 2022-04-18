@@ -1,18 +1,18 @@
-package com.example.zuccecho.Controller;
+package com.example.zuccecho.Services.implement;
 
 import com.example.zuccecho.Entity.AnswerSheet;
 import com.example.zuccecho.Repository.AnswerSheetRepository;
-import com.example.zuccecho.Services.AnalysisControllerServices;
+import com.example.zuccecho.Services.AnalysisServices;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-@RestController
-public class AnalysisController implements AnalysisControllerServices {
+@Service
+public class AnalysisServicesImplement implements AnalysisServices {
 
     //...(暂时不需要实现)
 

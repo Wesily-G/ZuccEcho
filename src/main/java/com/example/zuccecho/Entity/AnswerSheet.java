@@ -12,7 +12,7 @@ import java.util.ArrayList;
 
 @Data
 @Document(collection = "AnswerSheet")
-public class AnswerSheet implements Serializable {
+public class AnswerSheet{
     @Id
     @AutoId
     @Field("id")

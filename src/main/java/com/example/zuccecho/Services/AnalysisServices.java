@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-public interface AnalysisControllerServices {
+public interface AnalysisServices {
     public ArrayList<AnswerSheet> getAnswerSheets(long feedbackID);
     public HashMap<String, Map<String,Integer>> analyzeChoices(long feedbackID);
     public HashMap<String,ArrayList<String>> analyzeCompletion(long feedbackID);

@@ -12,7 +12,7 @@ import java.io.Serializable;
 
 @Data
 @Document(collection = "Teacher")
-public class Teacher implements Serializable {
+public class Teacher {
     @Id
     @AutoId
     @Field("id")

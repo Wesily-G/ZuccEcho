@@ -12,7 +12,7 @@ import java.util.Date;
 
 @Data
 @Document(collection = "Lecture")
-public class Lecture implements Serializable {
+public class Lecture {
     @Id
     @AutoId
     @Field("id")

@@ -13,7 +13,7 @@ import java.io.Serializable;
 
 @Data
 @Document(collection = "Student")
-public class Student implements Serializable {
+public class Student{
     @Id
     @AutoId
     @Field("id")

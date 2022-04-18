@@ -8,10 +8,11 @@ import org.springframework.data.mongodb.core.mapping.Field;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Date;
 
 @Data
 @Document(collection = "Feedback")
-public class Feedback implements Serializable {
+public class Feedback {
     @Id
     @AutoId
     @Field("classID")
@@ -20,5 +21,7 @@ public class Feedback implements Serializable {
     private Long TeacherID;
     @Field("answersheetsID")
     private ArrayList<Long> answersheetsID;
+    @Field("EndDate")
+    private Date endDate;
 
 }

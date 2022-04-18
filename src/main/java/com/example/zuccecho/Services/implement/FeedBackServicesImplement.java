@@ -1,22 +1,21 @@
-package com.example.zuccecho.Controller;
+package com.example.zuccecho.Services.implement;
 
 import com.example.zuccecho.Entity.AnswerSheet;
 import com.example.zuccecho.Entity.Feedback;
 import com.example.zuccecho.Repository.AnswerSheetRepository;
 import com.example.zuccecho.Repository.FeedbackRepository;
-import com.example.zuccecho.Services.FeedBackControllerServices;
+import com.example.zuccecho.Services.FeedBackServices;
 import com.example.zuccecho.Support.ResponseData;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 
-import java.net.BindException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-@RestController
-@RequestMapping("FeedBack")
-public class FeedBackController implements FeedBackControllerServices {
+@Service
+public class FeedBackServicesImplement implements FeedBackServices {
     @Autowired
     private FeedbackRepository fr;
     @Autowired
@@ -30,45 +29,28 @@ public class FeedBackController implements FeedBackControllerServices {
 //        return false;
 //    }
 
-    @GetMapping("checkSpecificContent/{id}")
-    public ResponseData checkSpecificContent(@PathVariable("id") long answersheetID){
-        ResponseData rsp = new ResponseData();
-
+    public AnswerSheet checkSpecificContent(long answersheetID){
+        AnswerSheet t = null;
         try{
-            AnswerSheet t = asr.findById(answersheetID).get();
-            rsp.setRspData(t);
+            t = asr.findById(answersheetID).get();
         }catch(Exception e){
-            if(e instanceof MethodArgumentNotValidException){
-                rsp.setError();
-                rsp.setRspData(new Boolean(Boolean.FALSE));
-            }else{
-                rsp.setFailed();
-                rsp.setRspData(new Boolean(Boolean.FALSE));
-            }
+            System.out.println(e);
+        }finally {
+            return t;
         }
-
-        return rsp;
-    }
-    @GetMapping("findFeedback/{id}")
-    public ResponseData findFeedback(@PathVariable("id") Long feedbackID){
-        ResponseData rsp = new ResponseData();
-        try{
-            Feedback t = fr.findById(feedbackID).get();
-//            Feedback t = fr.findByAnswersheetsID(feedbackID);
-            rsp.setRspData(t);
-        }catch(Exception e){
-            if(e instanceof MethodArgumentNotValidException){
-                rsp.setError();
-                rsp.setRspData(new Boolean(Boolean.FALSE));
-            }else{
-                rsp.setFailed();
-                rsp.setRspData(new Boolean(Boolean.FALSE));
-            }
-        }
-        return rsp;
     }
 
-    @PostMapping("fillAnswerSheet")
+    public Feedback findFeedback(Long feedbackID){
+        Feedback t = null;
+        try{
+            t = fr.findById(feedbackID).get();
+        }catch(Exception e){
+            System.out.println(e);
+        }finally {
+            return t;
+        }
+    }
+
     public void fillAnswerSheet(){
         AnswerSheet as = new AnswerSheet();
         as.setStudentID(31901032L);
@@ -78,7 +60,6 @@ public class FeedBackController implements FeedBackControllerServices {
         asr.save(as);
     }
 
-    @PostMapping("fillFeedback")
     public void fillFeedback(){
         Feedback fb = new Feedback();
         fb.setClassID(1234123L);
