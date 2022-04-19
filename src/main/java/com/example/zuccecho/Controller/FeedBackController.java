@@ -1,31 +1,18 @@
 package com.example.zuccecho.Controller;
 
-import com.example.zuccecho.Entity.AnswerSheet;
-import com.example.zuccecho.Entity.Feedback;
-import com.example.zuccecho.Repository.AnswerSheetRepository;
-import com.example.zuccecho.Repository.FeedbackRepository;
+import com.example.zuccecho.DTO.FeedbackDTO;
 import com.example.zuccecho.Services.FeedBackServices;
-import com.example.zuccecho.Services.StudentAnswerServices;
 import com.example.zuccecho.Support.ResponseData;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.net.BindException;
 
 @RestController
 @RequestMapping("FeedBack")
 public class FeedBackController {
     @Autowired
     private FeedBackServices feedBackServices;
-
-    //应该是前端干的事把
-//    public boolean publicQuestion(long lectureID,long modelID){
-//
-//        //...
-//
-//        return false;
-//    }
 
     @GetMapping("checkSpecificContent/{id}")
     public ResponseData checkSpecificContent(@PathVariable("id") long answersheetID){
@@ -47,6 +34,24 @@ public class FeedBackController {
             rspData.setFailed();
         }
         return rspData;
+    }
+
+    @PostMapping(value="publicFeedback",produces = "application/json;charset=UTF-8")
+    public ResponseData publicFeedback(@RequestBody FeedbackDTO feedbackDTO){
+        ResponseData rsp = new ResponseData();
+        try{
+            feedBackServices.publicFeedback(feedbackDTO);
+            rsp.setRspData(feedbackDTO);
+        }catch (Exception e){
+            if(e instanceof BindException){
+                rsp.setError();
+                rsp.setRspData("BindException");
+            }else{
+                rsp.setFailed();
+                rsp.setRspData(new Boolean(Boolean.FALSE));
+            }
+        }
+        return rsp;
     }
 
     @PostMapping("fillAnswerSheet")
