@@ -6,6 +6,9 @@ import com.example.zuccecho.Repository.TeacherRepository;
 import com.example.zuccecho.Services.TeacherServices;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 
@@ -17,6 +20,7 @@ public class TeacherServicesImplement implements TeacherServices {
     @Autowired
     private TeacherRepository tr;
 
+    @Cacheable(key = "#p0.getId()",value = "ID#2")
     public Teacher addTeacher(TeacherDTO teacherDTO){
         Teacher teacher = new Teacher();
         //错误校验后用entity类存入数据库
@@ -25,14 +29,17 @@ public class TeacherServicesImplement implements TeacherServices {
         return teacher;
     }
 
+    @CacheEvict(key = "#p0")
     public void deleteTeacherById(Long id){
         tr.deleteById(id);
     }
 
+    @Cacheable(key = "#p0",value = "ID#2")
     public Teacher findTeacherById(Long id){
         return tr.findById(id).get();
     }
 
+    @CachePut(key = "#p0.getId()")
     public boolean updateTeacher(TeacherDTO TeacherDTO){
         try {
             Teacher teacher = new Teacher();

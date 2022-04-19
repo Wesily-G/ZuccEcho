@@ -1,30 +1,32 @@
 package com.example.zuccecho.Controller;
 
-import com.example.zuccecho.DTO.TeacherDTO;
+import com.example.zuccecho.DTO.StudentDTO;
+import com.example.zuccecho.Entity.QAModel;
 import com.example.zuccecho.Entity.Student;
-import com.example.zuccecho.Entity.Teacher;
-import com.example.zuccecho.Repository.TeacherRepository;
-import com.example.zuccecho.Services.TeacherServices;
+import com.example.zuccecho.Repository.StudentRepository;
+import com.example.zuccecho.Services.StudentServices;
 import com.example.zuccecho.Support.ResponseData;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheConfig;
+import org.springframework.stereotype.Service;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.BindException;
 
 @RestController
-@RequestMapping("teacher")
-public class TeacherServicesImplement {
-
+@RequestMapping("student")
+@CacheConfig(cacheNames = "students")
+public class StudentController {
     @Autowired
-    private TeacherServices teacherServices;
+    private StudentServices studentServices;
 
-    @PostMapping(value="addTeacher",produces = "application/json;charset=UTF-8")
-    public ResponseData addTeacher(@RequestBody TeacherDTO teacherDTO){
+    @PostMapping(value="addStudent",produces = "application/json;charset=UTF-8")
+    public ResponseData addStudent(@RequestBody StudentDTO studentDTO){
         ResponseData rsp = new ResponseData();
         try{
-            teacherServices.addTeacher(teacherDTO);
-            rsp.setRspData(teacherDTO);
+            studentServices.addStudent(studentDTO);
+            rsp.setRspData(studentDTO);
         }catch (Exception e){
             if(e instanceof BindException){
                 rsp.setError();
@@ -37,11 +39,11 @@ public class TeacherServicesImplement {
         return rsp;
     }
 
-    @DeleteMapping("deleteTeacher/{id}")
-    public ResponseData deleteTeacherById(@PathVariable("id") Long id){
+    @DeleteMapping("deleteStudent/{id}")
+    public ResponseData deleteStudentById(@PathVariable("id") Long id){
         ResponseData rsp = new ResponseData();
         try{
-            teacherServices.deleteTeacherById(id);
+            studentServices.deleteStudentById(id);
             rsp.setRspData(new Boolean(Boolean.TRUE));
         }catch (Exception e){
             if(e instanceof MethodArgumentNotValidException){
@@ -56,12 +58,12 @@ public class TeacherServicesImplement {
         return rsp;
     }
 
-    @GetMapping("findTeacher/{id}")
-    public ResponseData findTeacherById(@PathVariable("id") Long id){
+    @GetMapping("findStudent/{id}")
+    public ResponseData findStudentById(@PathVariable("id") Long id){
         ResponseData rsp = new ResponseData();
         try{
-            Teacher teacher = teacherServices.findTeacherById(id);
-            rsp.setRspData(teacher);
+            Student student = studentServices.findStudentById(id);
+            rsp.setRspData(student);
         }catch (Exception e){
             if(e instanceof MethodArgumentNotValidException){
                 rsp.setError();
@@ -75,12 +77,12 @@ public class TeacherServicesImplement {
         return rsp;
     }
 
-    @PutMapping(value = "updateTeacher",produces = "application/json;charset=UTF-8")
-    public ResponseData updateTeacher(@RequestBody TeacherDTO teacherDTO){
+    @PutMapping(value = "updateStudent",produces = "application/json;charset=UTF-8")
+    public ResponseData updateStudent(@RequestBody StudentDTO studentDTO){
         ResponseData rsp = new ResponseData();
         try {
-            teacherServices.updateTeacher(teacherDTO);
-            rsp.setRspData(teacherDTO);
+            studentServices.updateStudent(studentDTO);
+            rsp.setRspData(studentDTO);
         }catch (Exception e){
             if(e instanceof BindException){
                 rsp.setError();
@@ -93,9 +95,9 @@ public class TeacherServicesImplement {
         return rsp;
     }
 
-    @GetMapping("fillTeacher")
-    public void fillTeacher(){
-        teacherServices.fillTeacher();
+    @GetMapping("fillStudent")
+    public void fillStudent(){
+        studentServices.fillStudent();
     }
 
 }

@@ -11,6 +11,7 @@ import com.example.zuccecho.Services.FeedBackServices;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheConfig;
+import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
@@ -33,6 +34,7 @@ public class FeedBackServicesImplement implements FeedBackServices {
 
     //前端获得模板修改后自行发布问卷，后端会将修改过后的问卷以model形式存储在feedback中
     //!!!!!!!!!不知道对不对需要测试!!!!!!!!!!!!
+    @Cacheable(key = "#p0.getId()",value = "ID#2")  //value指定的是缓存的名字
     public Feedback publicFeedback(FeedbackDTO feedbackDTO){
         Feedback t = null;
         try{
@@ -65,6 +67,7 @@ public class FeedBackServicesImplement implements FeedBackServices {
         }
     }
 
+    @Cacheable(key = "#p0",value = "ID#2")
     public Feedback findFeedback(Long feedbackID){
         Feedback t = null;
         try{
@@ -97,7 +100,7 @@ public class FeedBackServicesImplement implements FeedBackServices {
 
     //追踪 应填写人，已填写人，未填写人
     //!!!!!!!!!不知道对不对需要测试!!!!!!!!!!!!
-    @Cacheable(key ="#p0",value = "Feedback#2")
+    @Cacheable(key ="#p0",value = "FeedbackStatistic#2")
     public HashMap<String,ArrayList<Long>> feedbackStatistics(long feedbackID){
         HashMap<String,ArrayList<Long>> result = new HashMap<String,ArrayList<Long>>();
         //先通过feedbackid找到应填写人
@@ -117,8 +120,6 @@ public class FeedBackServicesImplement implements FeedBackServices {
         //最后获得差值就知道已填写的
         ArrayList<Long> done = new ArrayList<>(todo);
         done.removeAll(empty);
-
-        //最后利用quartz每2h运行一次该函数做统计
 
         return result;
     }

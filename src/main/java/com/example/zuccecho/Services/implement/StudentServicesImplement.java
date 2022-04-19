@@ -9,6 +9,9 @@ import com.example.zuccecho.Support.ResponseData;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheConfig;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
@@ -20,6 +23,7 @@ public class StudentServicesImplement implements StudentServices {
     @Autowired
     private StudentRepository sr;
 
+    @Cacheable(key = "#p0.getId()",value = "ID#2")
     public Student addStudent(StudentDTO studentDTO){
         Student student = new Student();
         //错误校验后用entity类存入数据库
@@ -28,14 +32,17 @@ public class StudentServicesImplement implements StudentServices {
         return student;
     }
 
+    @CacheEvict(key = "#p0")
     public void deleteStudentById(Long id){
         sr.deleteById(id);
     }
 
+    @Cacheable(key = "#p0",value = "ID#2")
     public Student findStudentById(Long id){
         return sr.findById(id).get();
     }
 
+    @CachePut(key = "#p0.getId()")
     public boolean updateStudent(StudentDTO studentDTO){
         try {
             Student student = new Student();
