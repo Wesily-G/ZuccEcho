@@ -14,6 +14,7 @@ public interface FeedBackServices {
     Feedback findFeedback(Long feedbackID);
     HashMap<String,ArrayList<Long>> feedbackStatistics(long feedbackID);
     Feedback publicFeedback(FeedbackDTO feedbackDTO);
+    void ReminderForNotFilled(long feedbackID);
     void fillAnswerSheet();
     void fillFeedback();
 }

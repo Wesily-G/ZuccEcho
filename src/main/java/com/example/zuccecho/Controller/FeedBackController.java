@@ -69,4 +69,16 @@ public class FeedBackController {
         }
         return rspData;
     }
+
+    @PostMapping("reminderForNotFilled/{id}")
+    public ResponseData ReminderForNotFilled(long feedbackID){
+        ResponseData rspData = new ResponseData();
+        try {
+            feedBackServices.ReminderForNotFilled(feedbackID);
+        }catch (Exception e){
+            rspData.setRspData(new Boolean(Boolean.FALSE));
+        }
+
+        return rspData;
+    }
 }

@@ -4,6 +4,7 @@ import com.example.zuccecho.DTO.FeedbackDTO;
 import com.example.zuccecho.Entity.AnswerSheet;
 import com.example.zuccecho.Entity.Feedback;
 import com.example.zuccecho.Entity.Student;
+import com.example.zuccecho.Quartz.ReminderForNotFilledSchedule;
 import com.example.zuccecho.Repository.AnswerSheetRepository;
 import com.example.zuccecho.Repository.FeedbackRepository;
 import com.example.zuccecho.Repository.StudentRepository;
@@ -54,6 +55,11 @@ public class FeedBackServicesImplement implements FeedBackServices {
         }
         return t;
 
+    }
+
+    public void ReminderForNotFilled(long feedbackID) {
+        //具体事务因为涉及到quartz所以将代码分装到Quartz文件夹中了
+        ReminderForNotFilledSchedule.schedule(feedbackID);
     }
 
     public AnswerSheet checkSpecificContent(long answersheetID){
