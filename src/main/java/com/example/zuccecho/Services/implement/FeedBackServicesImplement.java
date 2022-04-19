@@ -17,6 +17,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import org.slf4j.LoggerFactory;
+import org.slf4j.Logger;
 
 @Service
 @CacheConfig(cacheNames = "FeedBackService")
@@ -27,6 +29,7 @@ public class FeedBackServicesImplement implements FeedBackServices {
     private AnswerSheetRepository asr;
     @Autowired
     private StudentRepository sr;
+    private Logger log = LoggerFactory.getLogger(this.getClass());
 
     //前端获得模板修改后自行发布问卷，后端会将修改过后的问卷以model形式存储在feedback中
     //!!!!!!!!!不知道对不对需要测试!!!!!!!!!!!!
@@ -94,7 +97,7 @@ public class FeedBackServicesImplement implements FeedBackServices {
 
     //追踪 应填写人，已填写人，未填写人
     //!!!!!!!!!不知道对不对需要测试!!!!!!!!!!!!
-    @Cacheable(key ="#p0")
+    @Cacheable(key ="#p0",value = "Feedback#2")
     public HashMap<String,ArrayList<Long>> feedbackStatistics(long feedbackID){
         HashMap<String,ArrayList<Long>> result = new HashMap<String,ArrayList<Long>>();
         //先通过feedbackid找到应填写人
@@ -115,6 +118,11 @@ public class FeedBackServicesImplement implements FeedBackServices {
         ArrayList<Long> done = new ArrayList<>(todo);
         done.removeAll(empty);
 
+        //最后利用quartz每2h运行一次该函数做统计
+
         return result;
     }
 }
+
+
+
