@@ -25,7 +25,7 @@ public class StudentAnswerServicesImplement implements StudentAnswerServices {
     private AnswerSheetRepository asr;
 
     //create new AnswerSheet
-    @Cacheable(key = "#p0.getId()",value = "ID#2")
+    @Cacheable(key = "#p0.getId()",value = "AnswerSheetID#2")
     public AnswerSheet writeAnswerSheet(AnswerSheetDTO answerSheetDTO){
         AnswerSheet answerSheet = new AnswerSheet();
         //错误校验后用entity类存入数据库

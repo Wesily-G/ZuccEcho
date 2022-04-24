@@ -31,7 +31,7 @@ public class TeacherController {
                 rsp.setRspData("BindException");
             }else{
                 rsp.setFailed();
-                rsp.setRspData(new Boolean(Boolean.FALSE));
+                rsp.setRspData(e.getMessage());
             }
         }
         return rsp;

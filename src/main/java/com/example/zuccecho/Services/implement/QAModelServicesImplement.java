@@ -25,7 +25,7 @@ public class QAModelServicesImplement implements QAModelServices {
     @Autowired
     private QAModelRepository mr;
 
-    @Cacheable(key = "#p0.getId()",value = "ID#2")
+    @Cacheable(key = "#p0.getId()",value = "ModelID#2")
     public QAModel addModel(QAModelDTO qaModelDTO){
         QAModel model = new QAModel();
         //错误校验后用entity类存入数据库
@@ -34,17 +34,17 @@ public class QAModelServicesImplement implements QAModelServices {
         return model;
     }
 
-    @CacheEvict(key = "#p0")
+    @CacheEvict(key = "#p0",value = "ModelID")
     public void deleteModelById(Long id){
         mr.deleteById(id);
     }
 
-    @Cacheable(key = "#p0",value = "ID#2")
+    @Cacheable(key = "#p0",value = "ModelID#2")
     public QAModel findModelById(Long id){
         return mr.findById(id).get();
     }
 
-    @CachePut(key = "#p0.getId()")
+    @CachePut(key = "#p0.getId()",value = "ModelID#2")
     public boolean updateModel(QAModelDTO qaModelDTO){
         try {
             QAModel qaModel = new QAModel();

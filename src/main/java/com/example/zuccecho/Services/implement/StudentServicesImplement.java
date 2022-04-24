@@ -23,7 +23,7 @@ public class StudentServicesImplement implements StudentServices {
     @Autowired
     private StudentRepository sr;
 
-    @Cacheable(key = "#p0.getId()",value = "ID#2")
+    @Cacheable(key = "#p0.getId()",value = "StudentID#2")
     public Student addStudent(StudentDTO studentDTO){
         Student student = new Student();
         //错误校验后用entity类存入数据库
@@ -32,17 +32,17 @@ public class StudentServicesImplement implements StudentServices {
         return student;
     }
 
-    @CacheEvict(key = "#p0")
+    @CacheEvict(key = "#p0",value = "StudentID")
     public void deleteStudentById(Long id){
         sr.deleteById(id);
     }
 
-    @Cacheable(key = "#p0",value = "ID#2")
+    @Cacheable(key = "#p0",value = "StudentID#2")
     public Student findStudentById(Long id){
         return sr.findById(id).get();
     }
 
-    @CachePut(key = "#p0.getId()")
+    @CachePut(key = "#p0.getId()",value = "StudentID#2")
     public boolean updateStudent(StudentDTO studentDTO){
         try {
             Student student = new Student();

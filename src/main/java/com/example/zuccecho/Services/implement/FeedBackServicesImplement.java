@@ -11,8 +11,6 @@ import com.example.zuccecho.Repository.StudentRepository;
 import com.example.zuccecho.Services.FeedBackServices;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.CacheConfig;
-import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
@@ -23,7 +21,6 @@ import org.slf4j.LoggerFactory;
 import org.slf4j.Logger;
 
 @Service
-@CacheConfig(cacheNames = "FeedBackService")
 public class FeedBackServicesImplement implements FeedBackServices {
     @Autowired
     private FeedbackRepository fr;
@@ -35,7 +32,7 @@ public class FeedBackServicesImplement implements FeedBackServices {
 
     //前端获得模板修改后自行发布问卷，后端会将修改过后的问卷以model形式存储在feedback中
     //!!!!!!!!!不知道对不对需要测试!!!!!!!!!!!!
-    @Cacheable(key = "#p0.getId()",value = "ID#2")  //value指定的是缓存的名字
+    @Cacheable(key = "#p0.getId()",value = "FeedBackID#2")  //value指定的是缓存的名字
     public Feedback publicFeedback(FeedbackDTO feedbackDTO){
         Feedback t = null;
         try{
@@ -62,6 +59,7 @@ public class FeedBackServicesImplement implements FeedBackServices {
         ReminderForNotFilledSchedule.schedule(feedbackID);
     }
 
+    @Cacheable(key = "#p0",value = "FeedBackID#2")
     public AnswerSheet checkSpecificContent(long answersheetID){
         AnswerSheet t = null;
         try{
@@ -73,7 +71,7 @@ public class FeedBackServicesImplement implements FeedBackServices {
         }
     }
 
-    @Cacheable(key = "#p0",value = "ID#2")
+    @Cacheable(key = "#p0",value = "FeedBackID#2")
     public Feedback findFeedback(Long feedbackID){
         Feedback t = null;
         try{

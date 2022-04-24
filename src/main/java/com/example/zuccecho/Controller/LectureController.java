@@ -3,6 +3,7 @@ import com.example.zuccecho.DTO.LectureDTO;
 import com.example.zuccecho.Services.LectureServices;
 import com.example.zuccecho.Support.ResponseData;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 
@@ -27,7 +28,8 @@ public class LectureController {
                 rsp.setRspData(new Boolean(Boolean.FALSE));
             }else{
                 rsp.setFailed();
-                rsp.setRspData(new Boolean(Boolean.FALSE));
+                rsp.setRspData(e.getMessage());
+                e.printStackTrace();
             }
         }
         return rsp;

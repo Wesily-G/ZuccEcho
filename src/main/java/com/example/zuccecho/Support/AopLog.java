@@ -19,12 +19,12 @@ public class AopLog {
     //线程局部的变量,解决多线程中相同变量的访问冲突问题。
     ThreadLocal<Long> startTime=new ThreadLocal<>();
     //定义切点
-    @Pointcut("execution(public * com.example.zuccecho..*.*(..))")
+    @Pointcut("execution(public * com.example.zuccecho.Controller..*.*(..))")
     public void aopWebLog() {}
     @Before("aopWebLog()")
     public void doBefore(JoinPoint joinPoint) throws Throwable {
         startTime.set(System.currentTimeMillis());
-        // 接收到请求， 记录请 求内容
+        // 接收到请求，记录请 求内容
         ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
         HttpServletRequest request = attributes.getRequest();
         // 记录下请求内容

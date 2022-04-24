@@ -16,7 +16,7 @@ import java.net.BindException;
 
 @RestController
 @RequestMapping("student")
-@CacheConfig(cacheNames = "students")
+@ResponseBody
 public class StudentController {
     @Autowired
     private StudentServices studentServices;
@@ -33,7 +33,8 @@ public class StudentController {
                 rsp.setRspData("BindException");
             }else{
                 rsp.setFailed();
-                rsp.setRspData(new Boolean(Boolean.FALSE));
+                rsp.setRspData(e.getMessage());
+                e.printStackTrace();
             }
         }
         return rsp;

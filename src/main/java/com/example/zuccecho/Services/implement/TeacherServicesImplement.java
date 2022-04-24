@@ -20,7 +20,7 @@ public class TeacherServicesImplement implements TeacherServices {
     @Autowired
     private TeacherRepository tr;
 
-    @Cacheable(key = "#p0.getId()",value = "ID#2")
+    @Cacheable(key = "#p0.getId()",value = "TeacherID#2")
     public Teacher addTeacher(TeacherDTO teacherDTO){
         Teacher teacher = new Teacher();
         //错误校验后用entity类存入数据库
@@ -29,17 +29,17 @@ public class TeacherServicesImplement implements TeacherServices {
         return teacher;
     }
 
-    @CacheEvict(key = "#p0")
+    @CacheEvict(key = "#p0",value = "TeacherID")
     public void deleteTeacherById(Long id){
         tr.deleteById(id);
     }
 
-    @Cacheable(key = "#p0",value = "ID#2")
+    @Cacheable(key = "#p0",value = "TeacherID#2")
     public Teacher findTeacherById(Long id){
         return tr.findById(id).get();
     }
 
-    @CachePut(key = "#p0.getId()")
+    @CachePut(key = "#p0.getId()",value = "TeacherID#2")
     public boolean updateTeacher(TeacherDTO TeacherDTO){
         try {
             Teacher teacher = new Teacher();
