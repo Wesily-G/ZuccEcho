@@ -3,9 +3,13 @@ package com.example.zuccecho.Controller;
 import com.example.zuccecho.DTO.StudentDTO;
 import com.example.zuccecho.Entity.QAModel;
 import com.example.zuccecho.Entity.Student;
+import com.example.zuccecho.QueueManager.Constants;
+import com.example.zuccecho.QueueManager.ZuccEchoMessage;
 import com.example.zuccecho.Repository.StudentRepository;
 import com.example.zuccecho.Services.StudentServices;
 import com.example.zuccecho.Support.ResponseData;
+import org.springframework.amqp.core.AmqpTemplate;
+import org.springframework.amqp.core.TopicExchange;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.stereotype.Service;
@@ -20,6 +24,10 @@ import java.net.BindException;
 public class StudentController {
     @Autowired
     private StudentServices studentServices;
+    @Autowired
+    private AmqpTemplate mqService;
+    @Autowired
+    private TopicExchange topicExchange;
 
     @PostMapping(value="addStudent",produces = "application/json;charset=UTF-8")
     public ResponseData addStudent(@RequestBody StudentDTO studentDTO){
@@ -37,6 +45,10 @@ public class StudentController {
                 e.printStackTrace();
             }
         }
+        ZuccEchoMessage msg = new ZuccEchoMessage(ZuccEchoMessage.CATEGORY_MODEL_PUB);
+        msg.appendContent("rspData",rsp);
+        mqService.convertAndSend(Constants.QUE_WORK_QUEUE,msg);
+        mqService.convertAndSend(topicExchange.getName(),"zucc.student.31901029",msg);
         return rsp;
     }
 

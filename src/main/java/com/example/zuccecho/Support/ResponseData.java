@@ -4,10 +4,11 @@ import com.alibaba.fastjson.JSON;
 import lombok.Data;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 @Data
-public class ResponseData {
+public class ResponseData implements Serializable {
 
     //00000Success,00500Failed,00999Error参数错误
     private String rspCode = "00000";

@@ -1,8 +1,12 @@
 package com.example.zuccecho.Controller;
 
 import com.example.zuccecho.DTO.FeedbackDTO;
+import com.example.zuccecho.QueueManager.Constants;
+import com.example.zuccecho.QueueManager.ZuccEchoMessage;
 import com.example.zuccecho.Services.FeedBackServices;
 import com.example.zuccecho.Support.ResponseData;
+import org.springframework.amqp.core.AmqpTemplate;
+import org.springframework.amqp.core.FanoutExchange;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -10,9 +14,14 @@ import java.net.BindException;
 
 @RestController
 @RequestMapping("FeedBack")
+@ResponseBody
 public class FeedBackController {
     @Autowired
     private FeedBackServices feedBackServices;
+    @Autowired
+    private AmqpTemplate mqService;
+    @Autowired
+    private FanoutExchange fanoutExchange;
 
     @GetMapping("checkSpecificContent/{id}")
     public ResponseData checkSpecificContent(@PathVariable("id") long answersheetID){
@@ -51,6 +60,9 @@ public class FeedBackController {
                 rsp.setRspData(new Boolean(Boolean.FALSE));
             }
         }
+        ZuccEchoMessage msg = new ZuccEchoMessage(ZuccEchoMessage.CATEGORY_PAPER);
+        msg.appendContent("rspData",rsp);
+        mqService.convertAndSend(fanoutExchange.getName(),"",msg);
         return rsp;
     }
 

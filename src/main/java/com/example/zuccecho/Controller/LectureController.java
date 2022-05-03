@@ -11,6 +11,7 @@ import java.net.BindException;
 
 @RestController
 @RequestMapping("lecture")
+@ResponseBody
 public class LectureController {
     @Autowired
     private LectureServices lectureServices;

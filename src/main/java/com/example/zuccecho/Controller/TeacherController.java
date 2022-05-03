@@ -3,9 +3,13 @@ package com.example.zuccecho.Controller;
 import com.example.zuccecho.DTO.TeacherDTO;
 import com.example.zuccecho.Entity.Student;
 import com.example.zuccecho.Entity.Teacher;
+import com.example.zuccecho.QueueManager.Constants;
+import com.example.zuccecho.QueueManager.ZuccEchoMessage;
 import com.example.zuccecho.Repository.TeacherRepository;
 import com.example.zuccecho.Services.TeacherServices;
 import com.example.zuccecho.Support.ResponseData;
+import org.springframework.amqp.core.AmqpTemplate;
+import org.springframework.amqp.core.TopicExchange;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
@@ -14,10 +18,14 @@ import java.net.BindException;
 
 @RestController
 @RequestMapping("teacher")
+@ResponseBody
 public class TeacherController {
-
     @Autowired
     private TeacherServices teacherServices;
+    @Autowired
+    private AmqpTemplate mqService;
+    @Autowired
+    private TopicExchange topicExchange;
 
     @PostMapping(value="addTeacher",produces = "application/json;charset=UTF-8")
     public ResponseData addTeacher(@RequestBody TeacherDTO teacherDTO){
@@ -34,6 +42,9 @@ public class TeacherController {
                 rsp.setRspData(e.getMessage());
             }
         }
+        ZuccEchoMessage msg = new ZuccEchoMessage(ZuccEchoMessage.CATEGORY_MODEL_PUB);
+        msg.appendContent("rspData",rsp);
+        mqService.convertAndSend(topicExchange.getName(),"zucc.teacher.31901031",msg);
         return rsp;
     }
 

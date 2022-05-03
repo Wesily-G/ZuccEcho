@@ -13,6 +13,7 @@ import java.util.ArrayList;
 
 @RestController
 @RequestMapping("model")
+@ResponseBody
 public class QAModelController {
     @Autowired
     private QAModelServices qaModelServices;
