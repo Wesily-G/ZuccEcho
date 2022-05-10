@@ -3,24 +3,25 @@ package com.example.zuccecho.Entity;
 import com.example.zuccecho.Support.AutoId;
 import lombok.Data;
 import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
-import org.springframework.data.mongodb.core.mapping.Field;
+import org.springframework.data.elasticsearch.annotations.Document;
+import org.springframework.data.elasticsearch.annotations.Field;
+import org.springframework.data.elasticsearch.annotations.FieldType;
 
 import javax.validation.constraints.NotBlank;
-import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Date;
 
 @Data
-@Document(collection = "QAModel")
-public class QAModel{
+@Document(indexName = "model")
+public class QAModelElastic {
     @Id
     @AutoId
-    @Field("id")
+    @Field(type = FieldType.Auto)
     private long id;
     @NotBlank(message = "Name can not be empty.")
-    @Field("name")
+    @Field(type = FieldType.Text)
     private String name;
-    @Field("questions")
+    @Field(type = FieldType.Text)
     private ArrayList<String> questions;
     @Field("selections")
     private ArrayList<String> selections;
